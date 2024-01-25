@@ -17,7 +17,9 @@
 1. build nozokimado for shiritori relay
 
     ```bash
-    cd shiritori
+    cd shiritori/nozokimado
+    # first time only
+    npm install
     npm run build
     ```
 
