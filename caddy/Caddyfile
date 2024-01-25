@@ -1,0 +1,29 @@
+{
+	auto_https off
+}
+
+(forward_websocket) {
+	@websocket {
+		header Connection *Upgrade*
+		header Upgrade websocket
+	}
+	reverse_proxy @websocket {args[0]}
+}
+
+(forward_nip11) {
+	@nip11 {
+		header Accept application/nostr+json
+	}
+	reverse_proxy @nip11 {args[0]}
+}
+
+:8877 {
+	root * /srv/shiritori
+
+	route {
+		import forward_websocket "strfry_shiritori_relay:7777"
+		import forward_nip11 "strfry_shiritori_relay:7777"
+		file_server
+	}
+}
+

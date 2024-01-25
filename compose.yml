@@ -1,0 +1,159 @@
+services:
+  whitelisted_relay:
+    build:
+      context: ./whitelisted/sifter
+      dockerfile: ./Dockerfile
+    container_name: strfry_whitelisted_relay
+    command: --config=config/relay.conf relay 
+    volumes:
+      - ./whitelisted/config:/app/config
+      - ./whitelisted/resource:${RESOURCE_DIR}
+      - ${STRFRY_DB}/whitelisted:/app/strfry-db
+    environment:
+      - RESOURCE_DIR
+    pid: host
+    networks:
+      - nostr_relays
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "20m"
+        max-file: "20"
+
+  whitelisted_router:
+    build:
+      context: ./whitelisted/sifter
+      dockerfile: ./Dockerfile
+    container_name: strfry_whitelisted_router
+    command: --config=config/relay.conf router config/router.conf
+    volumes:
+      - ./whitelisted/config:/app/config
+      - ./whitelisted/resource:${RESOURCE_DIR}
+      - ${STRFRY_DB}/whitelisted:/app/strfry-db
+    environment:
+      - RESOURCE_DIR
+    pid: host
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "20"
+
+  jp_relay:
+    image: pluja/strfry:0.9.6
+    container_name: strfry_jp_relay
+    command: --config=config/relay.conf relay
+    volumes:
+      - ./jp/config:/app/config
+      - ${STRFRY_DB}/jp:/app/strfry-db
+    pid: host
+    networks:
+      - nostr_relays
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "10"
+
+  shiritori_relay:
+    build:
+      context: ./shiritori/sifter
+      dockerfile: ./Dockerfile
+    container_name: strfry_shiritori_relay
+    command: --config=config/relay.conf relay
+    volumes:
+      - ./shiritori/config:/app/config
+      - ./shiritori/resource:${RESOURCE_DIR}
+      - ${STRFRY_DB}/shiritori:/app/strfry-db
+    environment:
+      - RESOURCE_DIR
+    env_file:
+      - ./shiritori/.env
+    pid: host
+    networks:
+      - nostr_relays
+    restart: unless-stopped
+    healthcheck:
+      test: "wget --quiet --spider http://localhost:7777 || exit 1"
+      interval: 5s
+      timeout: 3s
+      start_period: 5s
+      retries: 3
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "10"
+
+  shiritori_router:
+    build:
+      context: ./shiritori/sifter
+      dockerfile: ./Dockerfile
+    container_name: strfry_shiritori_router
+    command: --config=config/relay.conf router config/router.conf
+    volumes:
+      - ./shiritori/config:/app/config
+      - ./shiritori/resource:${RESOURCE_DIR}
+      - ${STRFRY_DB}/shiritori:/app/strfry-db
+    environment:
+      - RESOURCE_DIR
+    env_file:
+      - ./shiritori/.env
+    pid: host
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "10"
+
+  shiritori_ritrin:
+    build:
+      context: ./shiritori/ritrin
+      dockerfile: ./Dockerfile
+    container_name: shiritori_ritrin
+    volumes:
+      - ./shiritori/resource:${RESOURCE_DIR}
+    environment:
+      - RESOURCE_DIR
+    env_file:
+      - ./shiritori/.env
+    networks:
+      - nostr_relays
+    depends_on:
+      shiritori_relay:
+        condition: service_healthy
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "10"
+
+  caddy_nostr_relays:
+    image: caddy:2.7.5
+    container_name: caddy_nostr_relays
+    volumes:
+      - ./caddy:/etc/caddy
+      - ./shiritori/nozokimado/dist:/srv/shiritori
+      - caddy_data:/data
+      - caddy_config:/config
+    networks:
+      - nostr_relays
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "10"
+
+volumes:
+  caddy_data:
+  caddy_config:
+
+networks:
+  nostr_relays:
+    external: true

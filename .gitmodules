@@ -1,0 +1,9 @@
+[submodule "jp"]
+	path = jp
+	url = git@github.com:jiftechnify/nrelay-jp.c-stellar.net.git
+[submodule "whitelisted"]
+	path = whitelisted
+	url = git@github.com:jiftechnify/nrelay.c-stellar.net.git
+[submodule "shiritori"]
+	path = shiritori
+	url = git@github.com:jiftechnify/nostr-shiritori-relay.git
