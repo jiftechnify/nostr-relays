@@ -9,6 +9,7 @@ services:
       - ./whitelisted/config:/app/config
       - ./whitelisted/resource:${RESOURCE_DIR}
       - ${STRFRY_DB}/whitelisted:/app/strfry-db
+      - /usr/share/zoneinfo/Asia/Tokyo:/etc/localtime:ro
     environment:
       - RESOURCE_DIR
     pid: host
@@ -31,6 +32,7 @@ services:
       - ./whitelisted/config:/app/config
       - ./whitelisted/resource:${RESOURCE_DIR}
       - ${STRFRY_DB}/whitelisted:/app/strfry-db
+      - /usr/share/zoneinfo/Asia/Tokyo:/etc/localtime:ro
     environment:
       - RESOURCE_DIR
     pid: host
@@ -48,6 +50,7 @@ services:
     volumes:
       - ./jp/config:/app/config
       - ${STRFRY_DB}/jp:/app/strfry-db
+      - /usr/share/zoneinfo/Asia/Tokyo:/etc/localtime:ro
     pid: host
     networks:
       - nostr_relays
@@ -68,6 +71,7 @@ services:
       - ./shiritori/config:/app/config
       - ./shiritori/resource:${RESOURCE_DIR}
       - ${STRFRY_DB}/shiritori:/app/strfry-db
+      - /usr/share/zoneinfo/Asia/Tokyo:/etc/localtime:ro
     environment:
       - RESOURCE_DIR
     env_file:
@@ -98,6 +102,7 @@ services:
       - ./shiritori/config:/app/config
       - ./shiritori/resource:${RESOURCE_DIR}
       - ${STRFRY_DB}/shiritori:/app/strfry-db
+      - /usr/share/zoneinfo/Asia/Tokyo:/etc/localtime:ro
     environment:
       - RESOURCE_DIR
     env_file:
@@ -141,6 +146,7 @@ services:
       - ./shiritori/nozokimado/dist:/srv/shiritori
       - caddy_data:/data
       - caddy_config:/config
+      - /usr/share/zoneinfo/Asia/Tokyo:/etc/localtime:ro
     networks:
       - nostr_relays
     restart: unless-stopped
