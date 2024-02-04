@@ -10,8 +10,8 @@ services:
       - ./whitelisted/resource:${RESOURCE_DIR}
       - ${STRFRY_DB}/whitelisted:/app/strfry-db
       - /usr/share/zoneinfo/Asia/Tokyo:/etc/localtime:ro
-    environment:
-      - FOLLOW_CHECK_API_BASE_URL
+    env_file:
+      - ./whitelisted/.env
     networks:
       - nostr_relays
     pid: host
@@ -36,8 +36,8 @@ services:
       - ./whitelisted/resource:${RESOURCE_DIR}
       - ${STRFRY_DB}/whitelisted:/app/strfry-db
       - /usr/share/zoneinfo/Asia/Tokyo:/etc/localtime:ro
-    environment:
-      - FOLLOW_CHECK_API_BASE_URL
+    env_file:
+      - ./whitelisted/.env
     networks:
       - nostr_relays
     pid: host
@@ -62,6 +62,8 @@ services:
       - ./resource:${RESOURCE_DIR}
     environment:
       - TZ=Asia/Tokyo
+    env_file:
+      - ./whitelisted/.env
     networks:
       - nostr_relays
     healthcheck:
