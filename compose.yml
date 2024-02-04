@@ -12,12 +12,12 @@ services:
       - /usr/share/zoneinfo/Asia/Tokyo:/etc/localtime:ro
     environment:
       - FOLLOW_CHECK_API_BASE_URL
+    networks:
+      - nostr_relays
     pid: host
     depends_on:
       whitelisted_follow_check_api:
         condition: service_healthy
-    networks:
-      - nostr_relays
     restart: unless-stopped
     logging:
       driver: "json-file"
@@ -38,6 +38,8 @@ services:
       - /usr/share/zoneinfo/Asia/Tokyo:/etc/localtime:ro
     environment:
       - FOLLOW_CHECK_API_BASE_URL
+    networks:
+      - nostr_relays
     pid: host
     depends_on:
       whitelisted_follow_check_api:
@@ -60,6 +62,8 @@ services:
       - ./resource:${RESOURCE_DIR}
     environment:
       - TZ=Asia/Tokyo
+    networks:
+      - nostr_relays
     healthcheck:
       test: "wget --quiet --spider http://localhost:8080/health || exit 1"
       start_period: 10s
