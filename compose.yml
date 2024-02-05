@@ -59,7 +59,7 @@ services:
     ports:
       - 127.0.0.1:8080:8080
     volumes:
-      - ./resource:${RESOURCE_DIR}
+      - ./whitelisted/resource:${RESOURCE_DIR}
     environment:
       - TZ=Asia/Tokyo
     env_file:
