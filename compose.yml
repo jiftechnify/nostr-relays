@@ -144,6 +144,8 @@ services:
     env_file:
       - ./shiritori/.env
     pid: host
+    networks:
+      - nostr_relays
     restart: unless-stopped
     logging:
       driver: "json-file"
@@ -173,6 +175,17 @@ services:
       options:
         max-size: "10m"
         max-file: "10"
+      
+  shiritori_yomi_api:
+    build:
+      context: ./shiritori/yomi-api
+      dockerfile: ./Dockerfile
+    container_name: shiritori_yomi_api
+    ports:
+      - "127.0.0.1:8081:8080"
+    networks:
+      - nostr_relays
+    restart: unless-stopped
 
   caddy_nostr_relays:
     image: caddy:2.7.5
