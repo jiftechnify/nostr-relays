@@ -19,11 +19,6 @@ services:
       whitelisted_follow_check_api:
         condition: service_healthy
     restart: unless-stopped
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "20m"
-        max-file: "20"
 
   whitelisted_router:
     build:
@@ -45,11 +40,6 @@ services:
       whitelisted_follow_check_api:
         condition: service_healthy
     restart: unless-stopped
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "20"
 
   whitelisted_follow_check_api:
     build:
@@ -73,11 +63,6 @@ services:
       timeout: 3s
       retries: 2
     restart: unless-stopped
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "10"
 
   jp_relay:
     image: pluja/strfry:0.9.6
@@ -91,11 +76,6 @@ services:
     networks:
       - nostr_relays
     restart: unless-stopped
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "10"
 
   shiritori_relay:
     build:
@@ -122,11 +102,6 @@ services:
       timeout: 3s
       start_period: 5s
       retries: 3
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "10"
 
   shiritori_router:
     build:
@@ -147,11 +122,6 @@ services:
     networks:
       - nostr_relays
     restart: unless-stopped
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "10"
 
   shiritori_ritrin:
     build:
@@ -170,11 +140,6 @@ services:
       shiritori_relay:
         condition: service_healthy
     restart: unless-stopped
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "10"
       
   shiritori_yomi_api:
     build:
@@ -199,11 +164,6 @@ services:
     networks:
       - nostr_relays
     restart: unless-stopped
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "10"
 
 volumes:
   caddy_data:
