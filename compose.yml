@@ -65,9 +65,9 @@ services:
     restart: unless-stopped
 
   jp_relay:
-    image: pluja/strfry:0.9.6
+    image: dockurr/strfry:1.0.1
     container_name: strfry_jp_relay
-    command: --config=config/relay.conf relay
+    command: "/app/strfry --config=config/relay.conf relay"
     volumes:
       - ./jp/config:/app/config
       - ${STRFRY_DB}/jp:/app/strfry-db
