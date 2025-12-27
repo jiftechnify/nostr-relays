@@ -4,7 +4,7 @@ services:
       context: ./whitelisted/sifter
       dockerfile: ./Dockerfile
     container_name: strfry_whitelisted_relay
-    command: --config=config/relay.conf relay 
+    command: --config=config/relay.conf relay
     volumes:
       - ./whitelisted/config:/app/config
       - ./whitelisted/resource:${RESOURCE_DIR}
@@ -65,7 +65,7 @@ services:
     restart: unless-stopped
 
   jp_relay:
-    image: dockurr/strfry:1.0.1
+    image: dockurr/strfry:1.0.4
     container_name: strfry_jp_relay
     command: "/app/strfry --config=config/relay.conf relay"
     volumes:
@@ -140,7 +140,7 @@ services:
       shiritori_relay:
         condition: service_healthy
     restart: unless-stopped
-      
+
   shiritori_yomi_api:
     build:
       context: ./shiritori/yomi-api
